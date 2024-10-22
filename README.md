@@ -10,7 +10,11 @@ forge init
 forge build
 forge test
 ```
+## load submodules openzeppelin-contracts
 
+```sh
+ git submodule update --init --recursive
+```
 ## deploy contracts
 
 ```sh
