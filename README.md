@@ -5,6 +5,8 @@
 
 Ethereum Bulk Sender is a dApp designed for users who want to airdrop tokens or send tokens to multiple users in a few transactions, with customizable transaction fees. Built with Next.js.
 
+https://bulksendtokens.xyz/
+
 
 ## 1) Presentation
 
