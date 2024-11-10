@@ -6,7 +6,7 @@ import "src/testContracts/ERC1155.sol"; // Adjust the path to your ERC1155 imple
 import "src/BulkSender.sol"; // Adjust the path to your BulkSender implementation
 
 contract ERC1155BulkSenderTest is Test {
-    ERC1155Tester erc1155Tester;
+    ERC1155Token erc1155Token;
     BulkSender erc1155BulkSender;
     address owner;
     address account1;
@@ -21,14 +21,14 @@ contract ERC1155BulkSenderTest is Test {
         account3 = address(0x4);
 
         // Deploy contracts
-        erc1155Tester = new ERC1155Tester();
+        erc1155Token = new ERC1155Token();
         erc1155BulkSender = new BulkSender(account3);
 
         // Mint some tokens to account1
         vm.prank(owner); // Simulate transaction as `owner`
-        erc1155Tester.mint(account1, 1, 100);
-        erc1155Tester.mint(account1, 2, 100);
-        erc1155Tester.mint(account1, 3, 100);
+        erc1155Token.mint(account1, 1, 100);
+        erc1155Token.mint(account1, 2, 100);
+        erc1155Token.mint(account1, 3, 100);
     }
 
     function testBulkTransferSameValue() public {
@@ -46,14 +46,14 @@ contract ERC1155BulkSenderTest is Test {
 
         // Set approval for the bulk sender
         vm.prank(account1); // Simulate transaction as `account1`
-        erc1155Tester.setApprovalForAll(address(erc1155BulkSender), true);
+        erc1155Token.setApprovalForAll(address(erc1155BulkSender), true);
 
         // Simulate bulk transfer from account1 to account2
         vm.prank(account1); // Simulate transaction as `account1`
         vm.deal(account1, 1 ether);
-        erc1155BulkSender.bulkTransferERC1155{value: 0.1 ether}(address(erc1155Tester), recipients, tokenIds, amounts);
+        erc1155BulkSender.bulkTransferERC1155{value: 0.1 ether}(address(erc1155Token), recipients, tokenIds, amounts);
 
         // Verify the balance of account2
-        assertEq(erc1155Tester.balanceOf(account2, tokenId), amount);
+        assertEq(erc1155Token.balanceOf(account2, tokenId), amount);
     }
 }

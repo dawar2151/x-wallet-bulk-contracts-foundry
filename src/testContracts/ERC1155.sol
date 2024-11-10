@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ERC1155Tester is ERC1155 {
+contract ERC1155Token is ERC1155 {
 
     constructor() ERC1155("")  {
     }

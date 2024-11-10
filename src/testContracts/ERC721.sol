@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ERC721Tester is ERC721, Ownable {
+contract ERC721Token is ERC721, Ownable {
 
     constructor() ERC721("Tester", "TST") Ownable(msg.sender) {
     }

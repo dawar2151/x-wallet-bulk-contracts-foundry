@@ -6,7 +6,7 @@ import "src/testContracts/ERC721.sol"; // Update the path as needed
 import "src/BulkSender.sol"; // Update the path as needed
 
 contract ERC721BulkSenderTest is Test {
-    ERC721Tester erc721Tester;
+    ERC721Token erc721Token;
     BulkSender erc721BulkSender;
     address owner;
     address account1;
@@ -21,14 +21,14 @@ contract ERC721BulkSenderTest is Test {
         account3 = address(0x4);
 
         // Deploy contracts
-        erc721Tester = new ERC721Tester();
+        erc721Token = new ERC721Token();
         erc721BulkSender = new BulkSender(account3);
 
         // Mint some NFTs to account1
         vm.prank(owner); // Simulate transaction as `owner`
-        erc721Tester.mint(account1, 1);
-        erc721Tester.mint(account1, 2);
-        erc721Tester.mint(account1, 3);
+        erc721Token.mint(account1, 1);
+        erc721Token.mint(account1, 2);
+        erc721Token.mint(account1, 3);
     }
 
     function testBulkTransferSameValue() public {
@@ -42,18 +42,18 @@ contract ERC721BulkSenderTest is Test {
 
         // Approve the bulk sender to transfer tokenId on behalf of account1
         vm.prank(account1); // Simulate transaction as `account1`
-        erc721Tester.approve(address(erc721BulkSender), tokenId);
+        erc721Token.approve(address(erc721BulkSender), tokenId);
 
         // Simulate bulk transfer to account2 with the same value
         vm.prank(account1); // Simulate transaction as `account1`
         vm.deal(account1, 1 ether);
         erc721BulkSender.bulkTransferERC721{value: 0.01 ether}(
-            address(erc721Tester),
+            address(erc721Token),
             recipients,
             tokenIds
         );
 
         // Verify the owner of the token
-        assertEq(erc721Tester.ownerOf(1), account2);
+        assertEq(erc721Token.ownerOf(1), account2);
     }
 }

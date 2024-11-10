@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "src/testContracts/ERC20.sol";
 import "src/BulkSender.sol";
 contract ERC20BulkSenderTest is Test {
-    ERC20Tester erc20Tester;
+    ERC20Token erc20Token;
     BulkSender erc20BulkSender;
     address owner;
     address account1;
@@ -20,16 +20,16 @@ contract ERC20BulkSenderTest is Test {
         account3 = address(0x4);
 
         // Deploy contracts
-        erc20Tester = new ERC20Tester();
+        erc20Token = new ERC20Token();
         erc20BulkSender = new BulkSender(account3);
 
         // Mint some tokens to the owner
-        erc20Tester.mint(owner, 1000 ether);
+        erc20Token.mint(owner, 1000 ether);
 
         // Approve the bulk sender to transfer tokens on behalf of the owner
         vm.prank(owner); // Simulate transaction as `owner`
          vm.deal(owner, 1 ether);
-        erc20Tester.approve(address(erc20BulkSender), 1000 ether);
+        erc20Token.approve(address(erc20BulkSender), 1000 ether);
     }
 
     function testBulkTransferSameValue() public {
@@ -40,10 +40,10 @@ contract ERC20BulkSenderTest is Test {
         // Simulate bulk transfer to account1 with the same value
         vm.prank(owner); // Simulate transaction as `owner`
         vm.deal(owner, 1 ether);
-        erc20BulkSender.bulkTransferERC20{value: 0.01 ether}(address(erc20Tester), recipients, 300 ether);
+        erc20BulkSender.bulkTransferERC20{value: 0.01 ether}(address(erc20Token), recipients, 300 ether);
 
         // Verify the balance of account1
-        assertEq(erc20Tester.balanceOf(account1), 300 ether);
+        assertEq(erc20Token.balanceOf(account1), 300 ether);
     }
 
     function testBulkTransferDifferentValues() public {
@@ -55,9 +55,9 @@ contract ERC20BulkSenderTest is Test {
 
         // Simulate bulk transfer with different values
         vm.prank(owner); // Simulate transaction as `owner`
-        erc20BulkSender.bulkTransferERC20{value: 0.01 ether}(address(erc20Tester), recipients, amounts);
+        erc20BulkSender.bulkTransferERC20{value: 0.01 ether}(address(erc20Token), recipients, amounts);
 
         // Verify the balance of account1
-        assertEq(erc20Tester.balanceOf(account1), 300 ether);
+        assertEq(erc20Token.balanceOf(account1), 300 ether);
     }
 }
